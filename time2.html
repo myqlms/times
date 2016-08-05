@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自制时钟</title>
+		<style>
+			body{text-align: center;}
+		</style>
+	</head>
+	<body>
+		<canvas id="mycanvas" width="800px" height="800px" style="border:1px solid #FFf" contenteditable="true"
+			style="border-radius:50%;">
+		</canvas>
+	</body>
+	<script>
+		var mycanvas = document.getElementById('mycanvas');
+		var ctx = mycanvas.getContext('2d');
+		var timer = setInterval(clock,1000);
+		var n = 0;
+		//时钟外框
+		ctx.translate(400,400);
+		function clock(){
+			//获取时间
+			
+			var oDate = new Date();
+			var second = oDate.getSeconds();
+			var minute = oDate.getMinutes();
+			var houer = oDate.getHours();
+			
+			ctx.shadowBlur = 0;
+			ctx.shadowColor = '';
+			ctx.shadowOffsetX =0;
+			ctx.shadowOffsetY =0;
+			
+			ctx.clearRect(-400,-400,800,800)
+			ctx.beginPath();
+			ctx.arc(0,0,300,0,Math.PI*2,false);
+			ctx.strokeStyle = "#00FF00";
+			ctx.fillStyle = "#03ccbb";
+			ctx.lineWidth = 6;
+			//ctx.globalCompositeOperation = "source-out";
+			ctx.stroke();
+			ctx.fill();
+			ctx.closePath();
+			//画小格子，
+			
+			for(var i=0;i<60;i++){
+				ctx.beginPath();
+				ctx.rect(285,-3,10,6);
+				ctx.rotate(Math.PI*1/30);
+				ctx.fillStyle = '#fff';
+				ctx.fill();
+				ctx.closePath();
+			};
+			//画大格子
+			for(var j=0;j<12;j++){
+				ctx.beginPath();
+				ctx.rect(270,-5,25,10);
+				ctx.rotate(Math.PI*5/30);
+				ctx.fillStyle = '#007FFF';
+				ctx.fill();
+				ctx.closePath();
+			};
+			//滚动字幕
+			ctx.font = "italic 60px 微软雅黑";
+			ctx.fillStyle = "#fff";
+			ctx.fillText("私",-100-n,-40);
+			ctx.fillText("人",-30-n,-40);
+			ctx.fillText("订",40-n,-40);
+			ctx.fillText("制",110-n,-40);
+			ctx.fillText("私",500-n,-40);
+			ctx.fillText("人",570-n,-40);
+			ctx.fillText("订",640-n,-40);
+			ctx.fillText("制",710-n,-40);
+			
+			//ctx.fill();
+			if(n==480){
+				n = -120
+			}
+			n+=10
+			//写刻度12 3 6 9
+			ctx.restore();
+			ctx.shadowOffsetX = -1;
+			ctx.font = "40px 微软雅黑";
+			ctx.fillStyle = "#005bad"
+			ctx.fillText("XII",-25,-230);
+			
+			ctx.font = "40px 微软雅黑";
+			ctx.fillStyle = "#005bad"
+			ctx.fillText("III",230,15);
+			
+			ctx.font = "40px 微软雅黑";
+			ctx.fillStyle = "#005bad"
+			ctx.fillText("VI",-20,260);
+			
+			ctx.font = "40px 微软雅黑";
+			ctx.fillStyle = "#005bad"
+			ctx.fillText("IX",-270,15);
+			
+			
+		
+			
+			//时针运动
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.arc(0,0,150,Math.PI*((houer-3)/6)+Math.PI*(minute)/360,Math.PI*((houer-3)/6)+Math.PI*(minute)/360,false);
+			
+			ctx.shadowBlur = 3;
+			ctx.shadowColor = '#2B2B2B';
+			ctx.shadowOffsetX = -10;
+			ctx.shadowOffsetY = -3;
+			ctx.save();
+			ctx.strokeStyle = '#120a31';
+			ctx.lineCap = 'round';
+			ctx.lineWidth = 15;
+			ctx.stroke();
+			//ctx.clearColor('#0000FF')
+			
+			ctx.closePath();
+			
+			//分针运动
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.arc(0,0,220,Math.PI*(minute-15)/30+Math.PI*((second)/1800),Math.PI*(minute-15)/30+Math.PI*((second)/1800),false);
+			
+			ctx.lineWidth = 10;
+			ctx.strokeStyle = '#9e312e';
+			ctx.stroke();
+			//ctx.clearColor('#0000FF')
+			ctx.closePath();
+			
+			//画运动中的秒针
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.arc(0,0,275,Math.PI*((second-15)/30),Math.PI*(second-15)/30,false);
+			
+			ctx.lineWidth = 4;
+			ctx.strokeStyle = '#e0eeb0';
+			ctx.stroke();
+			//ctx.clearColor('#0000FF')
+			ctx.closePath();
+			
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.arc(0,0,30,Math.PI*((second+15)/30),Math.PI*(second+15)/30,false);
+			ctx.stroke();
+			//ctx.globalCompositeOperation = "";
+	
+			//时钟中心点
+			ctx.beginPath();
+			ctx.arc(0,0,6,0,Math.PI*2,false);
+			ctx.fillStyle = "#fff";
+			ctx.fill();
+			ctx.closePath();	
+		}
+		
+	</script>
+</html>
